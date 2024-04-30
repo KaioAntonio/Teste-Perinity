@@ -37,6 +37,9 @@ public class Tarefa {
     @Column(name = "DURACAO")
     private Integer duracao;
 
+    @Column(name = "FINALIZADA")
+    private Boolean tarefaFinalizada;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA")
     private Pessoa pessoa;
