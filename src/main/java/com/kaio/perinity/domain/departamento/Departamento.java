@@ -1,6 +1,7 @@
 package com.kaio.perinity.domain.departamento;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kaio.perinity.domain.pessoa.Pessoa;
 import com.kaio.perinity.domain.tarefa.Tarefa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +39,6 @@ public class Departamento {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "departamento")
-    private Set<Tarefa> pessoa;
+    private Set<Pessoa> pessoas;
 
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Validated
@@ -55,5 +57,11 @@ public class TarefaController {
         return new ResponseEntity<>(tarefaService.finalizarTarefa(idTarefa), HttpStatus.OK);
     }
 
+    @Operation(summary = "Listar 3 tarefas sem pessoa e prazos mais antigos", description =
+    "Listar 3 tarefas que estejam sem pessoa alocada com os prazos mais antigos")
+    @GetMapping("/pendentes")
+    public ResponseEntity<List<TarefaResponseDTO>> listarTarefasPendentes() {
+        return new ResponseEntity<>(tarefaService.listarTarefaSemPessoaAlocadaComPrazosAntigos(), HttpStatus.OK);
+    }
 
 }

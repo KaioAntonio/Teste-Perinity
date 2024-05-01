@@ -1,5 +1,6 @@
 package com.kaio.perinity.domain.tarefa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kaio.perinity.domain.departamento.Departamento;
 import com.kaio.perinity.domain.pessoa.Pessoa;
 import javax.persistence.Column;

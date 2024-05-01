@@ -8,9 +8,11 @@ import com.kaio.perinity.domain.pessoa.Pessoa;
 import com.kaio.perinity.domain.pessoa.PessoaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +26,12 @@ public class TarefaService {
     public TarefaResponseDTO criarTarefa(TarefaRequestDTO tarefaRequestDTO) throws RegraDeNegocioException {
         Tarefa tarefa = objectMapper.convertValue(tarefaRequestDTO, Tarefa.class);
         tarefa.setTarefaFinalizada(false);
-        tarefa.setDepartamento(departamentoRepository.findByNomeDepartamento(tarefaRequestDTO.getNomeDepartamento()));
+        Departamento departamento = departamentoRepository.findByNomeDepartamento(tarefaRequestDTO.getNomeDepartamento());
+        if(departamento == null) {
+            throw new RegraDeNegocioException("Departamento não existente, favor inserir um válido!");
+        }
+        tarefa.setDepartamento(departamento);
+
         return objectMapper.convertValue(tarefaRepository.save(tarefa), TarefaResponseDTO.class);
     }
 
@@ -54,5 +61,10 @@ public class TarefaService {
         return objectMapper.convertValue(tarefaRepository.save(tarefa), TarefaResponseDTO.class);
     }
 
-
+    public List<TarefaResponseDTO> listarTarefaSemPessoaAlocadaComPrazosAntigos() {
+        List<Tarefa> tarefas = tarefaRepository.listarTarefaSemPessoaAlocadaComPrazosAntigos(PageRequest.of(0, 3));
+        return tarefas.stream()
+                .map(tarefa -> objectMapper.convertValue(tarefa, TarefaResponseDTO.class))
+                .collect(Collectors.toList());
+    }
 }

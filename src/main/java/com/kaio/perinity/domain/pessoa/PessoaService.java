@@ -4,8 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaio.perinity.config.exception.RegraDeNegocioException;
 import com.kaio.perinity.domain.departamento.Departamento;
 import com.kaio.perinity.domain.departamento.DepartamentoRepository;
+import com.kaio.perinity.domain.tarefa.Tarefa;
+import com.kaio.perinity.domain.tarefa.TarefaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,6 +20,7 @@ public class PessoaService {
 
     private final PessoaRepository pessoaRepository;
     private final DepartamentoRepository departamentoRepository;
+    private final TarefaRepository tarefaRepository;
     private final ObjectMapper objectMapper;
 
     public PessoaResponseDTO criarPessoa(PessoaRequestDTO pessoaRequestDTO) {
@@ -44,6 +52,27 @@ public class PessoaService {
     public void removerPessoa(Integer id) throws RegraDeNegocioException {
         Pessoa pessoa = buscarPorId(id);
         pessoaRepository.delete(pessoa);
+    }
+
+    public List<PessoaNomeDepartamentoHorasDTO> listarPessoas() {
+        List<Pessoa> pessoas = pessoaRepository.findAll();
+        List<PessoaNomeDepartamentoHorasDTO> response = new ArrayList<>();
+        for (Pessoa pessoa : pessoas) {
+            PessoaNomeDepartamentoHorasDTO pessoaNomeDepartamentoHorasDTO = new PessoaNomeDepartamentoHorasDTO();
+            pessoaNomeDepartamentoHorasDTO.setNome(pessoa.getNome());
+            pessoaNomeDepartamentoHorasDTO.setDepartamento(pessoa.getDepartamento());
+            Tarefa tarefa = tarefaRepository.findByPessoa(pessoa);
+            pessoaNomeDepartamentoHorasDTO.setDuracao(tarefa.getDuracao());
+            response.add(pessoaNomeDepartamentoHorasDTO);
+        }
+        return response;
+    }
+
+    public PessoaMediaHorasDTO listarMediaHoraGasta(String nome, LocalDate prazo) {
+        Integer media = tarefaRepository.valorMedioHoras(nome, prazo);
+        PessoaMediaHorasDTO pessoaMediaHorasDTO = new PessoaMediaHorasDTO();
+        pessoaMediaHorasDTO.setMediaHorasGastas(media);
+        return pessoaMediaHorasDTO;
     }
 
 }
