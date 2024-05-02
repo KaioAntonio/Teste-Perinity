@@ -16,7 +16,6 @@ import com.kaio.perinity.domain.pessoa.PessoaResponseDTO;
 import com.kaio.perinity.domain.pessoa.PessoaService;
 import com.kaio.perinity.domain.tarefa.Tarefa;
 import com.kaio.perinity.domain.tarefa.TarefaRepository;
-import com.kaio.perinity.domain.tarefa.TarefaService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
