@@ -1,18 +1,19 @@
 package com.kaio.perinity.domain.tarefa;
 
 import com.kaio.perinity.domain.pessoa.Pessoa;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.domain.Pageable;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Integer> {
 
-    Tarefa findByPessoa(Pessoa pessoa);
+    List<Tarefa> findByPessoa(Pessoa pessoa);
 
     @Query("SELECT avg(t.duracao) as media_horas " +
             "FROM Tarefa t " +

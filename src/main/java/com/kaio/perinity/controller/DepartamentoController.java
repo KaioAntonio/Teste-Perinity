@@ -2,7 +2,6 @@ package com.kaio.perinity.controller;
 
 import com.kaio.perinity.domain.departamento.DepartamentoResponseDTO;
 import com.kaio.perinity.domain.departamento.DepartamentoService;
-import com.kaio.perinity.domain.pessoa.PessoaNomeDepartamentoHorasDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

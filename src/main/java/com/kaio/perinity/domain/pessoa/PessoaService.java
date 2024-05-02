@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +60,10 @@ public class PessoaService {
             PessoaNomeDepartamentoHorasDTO pessoaNomeDepartamentoHorasDTO = new PessoaNomeDepartamentoHorasDTO();
             pessoaNomeDepartamentoHorasDTO.setNome(pessoa.getNome());
             pessoaNomeDepartamentoHorasDTO.setDepartamento(pessoa.getDepartamento());
-            Tarefa tarefa = tarefaRepository.findByPessoa(pessoa);
-            pessoaNomeDepartamentoHorasDTO.setDuracao(tarefa.getDuracao());
+            List<Tarefa> tarefas = tarefaRepository.findByPessoa(pessoa);
+            for (Tarefa tarefa : tarefas) {
+                pessoaNomeDepartamentoHorasDTO.setDuracao(tarefa.getDuracao());
+            }
             response.add(pessoaNomeDepartamentoHorasDTO);
         }
         return response;
